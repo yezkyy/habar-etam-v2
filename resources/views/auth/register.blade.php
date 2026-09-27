@@ -51,8 +51,13 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-                <label for="date_of_birth" class="form-label text-amber-950">Tanggal Lahir</label>
-                <input type="date" id="date_of_birth" name="date_of_birth" value="{{ old('date_of_birth') }}" required class="form-input">
+                <label for="date_of_birth" class="form-label text-amber-950">Tanggal Lahir <span class="text-rose-500">*</span></label>
+                <div class="modern-date-picker-wrapper relative flex items-center cursor-pointer">
+                    <input type="text" id="date_of_birth" name="date_of_birth" value="{{ old('date_of_birth') }}" placeholder="Pilih Tanggal Lahir..." required data-max="today" class="modern-date-input form-input">
+                    <div class="absolute right-3.5 pointer-events-none text-gray-400 flex items-center justify-center">
+                        <i data-lucide="calendar" class="w-4 h-4 text-amber-600/80"></i>
+                    </div>
+                </div>
                 @error('date_of_birth')
                     <p class="form-error">{{ $message }}</p>
                 @enderror

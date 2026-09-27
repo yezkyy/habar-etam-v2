@@ -25,12 +25,21 @@ tar -czf deploy_bundle.tar.gz `
 # 3. Upload package to cPanel server
 Write-Host "`n[3/4] Uploading bundle to cPanel server (195.88.211.130)..." -ForegroundColor Yellow
 scp -P 22 deploy_bundle.tar.gz habareta@195.88.211.130:/home/habareta/habar-etam-v2/
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "`n[GAGAL] Upload via SCP gagal ($LASTEXITCODE). Silakan periksa koneksi internet, IP server, atau port SSH cPanel." -ForegroundColor Red
+    exit 1
+}
 
 # 4. Extract bundle, sync public_html assets, and optimize Laravel
 Write-Host "`n[4/4] Extracting code & refreshing cache on server..." -ForegroundColor Yellow
 ssh -p 22 habareta@195.88.211.130 "cd /home/habareta/habar-etam-v2 && tar -xzf deploy_bundle.tar.gz && rm -f deploy_bundle.tar.gz && cp -ru /home/habareta/habar-etam-v2/public/* /home/habareta/public_html/ 2>/dev/null || true && php artisan optimize:clear && php artisan config:cache && php artisan route:cache && php artisan view:cache"
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "`n[GAGAL] Eksekusi perintah via SSH gagal ($LASTEXITCODE)." -ForegroundColor Red
+    exit 1
+}
 
 # Clean up local archive
 if (Test-Path "deploy_bundle.tar.gz") { Remove-Item "deploy_bundle.tar.gz" -Force }
 
 Write-Host "`n Deployment to production completed successfully! All code & views updated." -ForegroundColor Green
+

@@ -199,7 +199,10 @@ function initScrollReveal() {
 }
 
 // 4. Initialize Lucide icons on page load and dynamic updates
-window.lucide = { createIcons, icons };
+window.lucide = { 
+    createIcons: (opts) => createIcons({ icons, ...(opts || {}) }), 
+    icons 
+};
 window.initIcons = () => {
     createIcons({ icons });
 };
@@ -638,7 +641,7 @@ function initCleanQueryOptimizer() {
 // 8. Modern Flatpickr Datepicker with Habar Etam Theme
 function initModernDatepickers() {
     document.querySelectorAll('input.modern-date-input, input[type="date"], input[type="datetime-local"], [data-datepicker]').forEach((input) => {
-        if (input.dataset.flatpickrEnhanced === 'true') return;
+        if (input.dataset.flatpickrEnhanced === 'true' || input.classList.contains('flatpickr-input') || input._flatpickr) return;
         if (input.closest('.swal2-container, .swal2-popup, .swal2-html-container') || input.classList.contains('swal2-input')) return;
         input.dataset.flatpickrEnhanced = 'true';
 
@@ -647,6 +650,7 @@ function initModernDatepickers() {
         const isRange = input.dataset.mode === 'range';
         const maxAttr = input.getAttribute('max') || input.dataset.max;
         const minAttr = input.getAttribute('min') || input.dataset.min;
+        const defaultDateAttr = input.getAttribute('value') || input.dataset.defaultDate;
 
         let maxDateVal = null;
         if (maxAttr === 'today') {
@@ -670,13 +674,14 @@ function initModernDatepickers() {
             dateFormat: isDateTime ? 'Y-m-d H:i' : 'Y-m-d',
             altInput: true,
             altFormat: isDateTime ? 'j F Y, H:i' : 'j F Y',
-            altInputClass: 'modern-date-input form-input text-xs h-[42px] sm:h-[46px] rounded-xl sm:rounded-2xl border-gray-200/90 bg-gray-50/60 hover:bg-white focus:bg-white text-left font-semibold text-gray-800 placeholder-gray-400 transition-all shadow-2xs hover:border-brand-gold/60 focus:border-brand-gold focus:ring-4 focus:ring-brand-gold/15 cursor-pointer w-full',
+            altInputClass: 'modern-date-picker-rendered form-input text-xs h-[42px] sm:h-[46px] rounded-xl sm:rounded-2xl border-gray-200/90 bg-gray-50/60 hover:bg-white focus:bg-white text-left font-semibold text-gray-800 placeholder-gray-400 transition-all shadow-2xs hover:border-brand-gold/60 focus:border-brand-gold focus:ring-4 focus:ring-brand-gold/15 cursor-pointer w-full',
             allowInput: false,
             enableTime: isDateTime,
             time_24hr: true,
             mode: isRange ? 'range' : 'single',
             maxDate: maxDateVal,
             minDate: minDateVal,
+            defaultDate: defaultDateAttr || undefined,
             disableMobile: true,
             monthSelectorType: 'dropdown',
             prevArrow: '<svg class="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>',
@@ -694,6 +699,17 @@ function initModernDatepickers() {
         if (fp && fp.altInput) {
             fp.altInput.placeholder = placeholderText;
             fp.altInput.setAttribute('placeholder', placeholderText);
+            fp.altInput.dataset.flatpickrEnhanced = 'true';
+
+            // If the input is wrapped in a modern-date-picker-wrapper, make clicking anywhere on the wrapper focus/open it
+            const wrapper = input.closest('.modern-date-picker-wrapper');
+            if (wrapper) {
+                wrapper.addEventListener('click', (e) => {
+                    if (e.target !== fp.altInput) {
+                        fp.open();
+                    }
+                });
+            }
         }
     });
 }

@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/habareta/habar-etam-v2
+    - /bin/cp -R * $DEPLOYPATH
+    - /bin/mkdir -p /home/habareta/public_html/build
+    - /bin/cp -R public/build/* /home/habareta/public_html/build/

@@ -321,14 +321,15 @@ $currentMode = $hasRegisterErrors ? 'register' : ($initialMode ?? 'login');
                                     <label for="reg_dob" class="block text-[11px] font-bold text-amber-950 mb-1">
                                         Tanggal Lahir <span class="text-rose-500">*</span>
                                     </label>
-                                    <div class="modern-date-picker-wrapper relative flex items-center">
+                                    <div class="modern-date-picker-wrapper relative flex items-center cursor-pointer">
                                         <input type="text"
                                             id="reg_dob"
                                             name="date_of_birth"
                                             value="{{ old('date_of_birth') }}"
                                             placeholder="Pilih Tanggal Lahir..."
                                             required
-                                            class="modern-date-input form-input rounded-xl sm:rounded-2xl border-gray-200/90 bg-gray-50/60 hover:bg-white focus:bg-white text-left font-semibold text-gray-800 placeholder-gray-400 transition-all shadow-2xs hover:border-brand-gold/60 focus:border-brand-gold focus:ring-4 focus:ring-brand-gold/15">
+                                            data-max="today"
+                                            class="modern-date-input form-input rounded-xl sm:rounded-2xl border-gray-200/90 bg-gray-50/60 hover:bg-white focus:bg-white text-left font-semibold text-gray-800 placeholder-gray-400 transition-all shadow-2xs hover:border-brand-gold/60 focus:border-brand-gold focus:ring-4 focus:ring-brand-gold/15 cursor-pointer">
                                         <div class="absolute right-3.5 pointer-events-none text-gray-400 flex items-center justify-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-amber-600/80">
                                                 <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
@@ -650,8 +651,14 @@ $currentMode = $hasRegisterErrors ? 'register' : ($initialMode ?? 'login');
             document.title = 'Masuk Akun Warga — Habar Etam';
         }
 
-        if (window.lucide) {
+        if (window.initIcons) {
+            window.initIcons();
+        } else if (window.lucide && window.lucide.createIcons) {
             window.lucide.createIcons();
+        }
+
+        if (window.initModernDatepickers) {
+            window.initModernDatepickers();
         }
     }
 
@@ -671,7 +678,9 @@ $currentMode = $hasRegisterErrors ? 'register' : ($initialMode ?? 'login');
             }
         });
 
-        if (window.lucide) {
+        if (window.initIcons) {
+            window.initIcons();
+        } else if (window.lucide && window.lucide.createIcons) {
             window.lucide.createIcons();
         }
     });
