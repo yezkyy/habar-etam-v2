@@ -700,9 +700,12 @@ function initModernDatepickers() {
 
             // If the input is wrapped in a modern-date-picker-wrapper, make clicking anywhere on the wrapper focus/open it
             const wrapper = input.closest('.modern-date-picker-wrapper');
-            if (wrapper) {
+            if (wrapper && !wrapper.dataset.hasDateClick) {
+                wrapper.dataset.hasDateClick = 'true';
                 wrapper.addEventListener('click', (e) => {
                     if (e.target !== fp.altInput) {
+                        e.stopPropagation();
+                        e.preventDefault();
                         fp.open();
                     }
                 });

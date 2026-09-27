@@ -42,8 +42,8 @@
     @php
     $manifest = json_decode(file_get_contents($manifestPath), true);
     @endphp
-    <link rel="stylesheet" href="{{ config('app.url') }}/build/{{ $manifest['resources/css/app.css']['file'] }}">
-    <script type="module" src="{{ config('app.url') }}/build/{{ $manifest['resources/js/app.js']['file'] }}"></script>
+    <link rel="stylesheet" href="{{ asset('build/' . $manifest['resources/css/app.css']['file']) }}">
+    <script type="module" src="{{ asset('build/' . $manifest['resources/js/app.js']['file']) }}"></script>
     @else
     @viteReactRefresh
     @vite(['resources/js/app.js', 'resources/css/app.css'])
