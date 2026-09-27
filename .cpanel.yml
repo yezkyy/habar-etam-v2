@@ -5,3 +5,5 @@ deployment:
     - /bin/cp -R * $DEPLOYPATH
     - /bin/mkdir -p /home/habareta/public_html/build
     - /bin/cp -R public/build/* /home/habareta/public_html/build/
+    - /bin/rm -f /home/habareta/habar-etam-v2/storage/framework/views/*.php
+

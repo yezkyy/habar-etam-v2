@@ -3,12 +3,9 @@ import Alpine from 'alpinejs';
 import { createIcons, icons } from 'lucide';
 import L from 'leaflet';
 import Lenis from 'lenis';
-import 'lenis/dist/lenis.css';
 import flatpickr from 'flatpickr';
 import { Indonesian } from 'flatpickr/dist/l10n/id.js';
-import 'flatpickr/dist/flatpickr.min.css';
 import Swal from 'sweetalert2';
-import 'sweetalert2/dist/sweetalert2.min.css';
 import Chart from 'chart.js/auto';
 
 window.Chart = Chart;
