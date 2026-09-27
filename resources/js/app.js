@@ -299,9 +299,9 @@ const getSelectIconSvg = (name, isSelected) => {
 
 // 6. Modern Custom Select UI/UX Enhancer with Search & Top Closest Matches
 function initCustomSelects() {
-    document.querySelectorAll('select:not([data-no-custom]):not(.swal2-select):not([class*="swal2"])').forEach((select) => {
+    document.querySelectorAll('select:not([data-no-custom]):not(.swal2-select):not([class*="swal2"]):not(.flatpickr-monthDropdown-months):not([class*="flatpickr"])').forEach((select) => {
         if (select.dataset.customEnhanced === 'true') return;
-        if (select.closest('.swal2-container, .swal2-popup, .swal2-html-container') || select.classList.contains('swal2-select')) return;
+        if (select.closest('.swal2-container, .swal2-popup, .swal2-html-container, .flatpickr-calendar, .flatpickr-months, .flatpickr-current-month') || select.classList.contains('swal2-select') || select.classList.contains('flatpickr-monthDropdown-months')) return;
         select.dataset.customEnhanced = 'true';
 
         const isSearchable = select.dataset.searchable === 'true' || select.options.length > 5;
